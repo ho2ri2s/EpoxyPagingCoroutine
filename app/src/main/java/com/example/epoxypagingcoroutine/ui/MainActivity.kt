@@ -27,7 +27,6 @@ class MainActivity : AppCompatActivity() {
         viewModel.start()
 
         viewModel.owner.observe(this, Observer {
-            textView.text = it[1].name
         })
     }
 }

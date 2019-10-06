@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="owner"
+            type="com.example.epoxypagingcoroutine.data.model.Owner" />
+    </data>
+
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/container_card"
+        android:layout_width="@dimen/card_width"
+        android:layout_height="@dimen/card_height"
+        android:clickable="true"
+        android:focusable="true"
+        android:foreground="?android:selectableItemBackground"
+        app:cardCornerRadius="@dimen/card_radius">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="4"
+                android:scaleType="centerCrop"
+                app:image="@{owner.icon}"
+                tools:src="@mipmap/ic_launcher" />
+
+            <TextView
+                style="@style/nameStyle"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="@{owner.name}"
+                tools:text="ho2ri2s" />
+        </LinearLayout>
+    </com.google.android.material.card.MaterialCardView>
+</layout>
