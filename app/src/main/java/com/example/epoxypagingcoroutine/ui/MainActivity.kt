@@ -22,12 +22,12 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
         (application as App).appComponent.inject(this)
-        viewModel = ViewModelProviders.of(this, viewModelFactory).get(GithubViewModel::class.java)
+        viewModel = ViewModelProvider(this, viewModelFactory).get(GithubViewModel::class.java)
 
-        viewModel.getGithubRepos()
+        viewModel.start()
 
         viewModel.owner.observe(this, Observer {
-            textView.text = it.name
+            textView.text = it[1].name
         })
     }
 }

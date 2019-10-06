@@ -1,5 +1,6 @@
 package com.example.epoxypagingcoroutine.data
 
+import com.example.epoxypagingcoroutine.data.model.Owner
 import com.example.epoxypagingcoroutine.data.model.Repo
 import retrofit2.Response
 import retrofit2.http.GET
@@ -14,4 +15,7 @@ interface GithubApi {
         @Query("page") page: String,
         @Query("per_page") perPage: String
     ): Response<List<Repo>>
+
+    @GET("/users/{username}")
+    suspend fun getOwner(@Path("username") username: String): Response<Owner>
 }

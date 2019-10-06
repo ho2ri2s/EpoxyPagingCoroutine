@@ -1,12 +1,12 @@
 package com.example.epoxypagingcoroutine.ui
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.*
+import androidx.paging.LivePagedListBuilder
+import androidx.paging.PagedList
 import com.example.epoxypagingcoroutine.data.GithubApi
 import com.example.epoxypagingcoroutine.data.model.Owner
 import com.example.epoxypagingcoroutine.data.model.Repo
+import com.example.epoxypagingcoroutine.ui.paging.DatasourceFactory
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -14,28 +14,48 @@ class GithubViewModel @Inject constructor(
     private val api: GithubApi
 ) : ViewModel() {
 
-    private val _repo = MutableLiveData<List<Repo>>()
-    val repo: LiveData<List<Repo>>
-        get() = _repo
+    private val _name = MutableLiveData<String>()
 
-    private val _owner = MutableLiveData<Owner>()
-    val owner: LiveData<Owner>
+    val repos: LiveData<PagedList<Repo>> =
+        Transformations.switchMap(_name) { username ->
+            val dataSourceFactory = DatasourceFactory(username, api, viewModelScope)
+
+            val config = PagedList.Config.Builder()
+                .setPageSize(PAGE_SIZE)
+                .setInitialLoadSizeHint(PAGE_SIZE)
+                .build()
+
+            LivePagedListBuilder(dataSourceFactory, config).build()
+        }
+
+    private val _owner = MutableLiveData<List<Owner>>()
+    val owner: LiveData<List<Owner>>
         get() = _owner
 
-    //"googlesamples", "android", "kotlin", "jetbrains"
-    fun getGithubRepos() = viewModelScope.launch {
-        val owners = listOf("ho2ri2s")
-        owners.forEach { owner ->
-            try {
-                val response = api.getGithubRepos(owner, "1", "50")
-                if (response.isSuccessful) {
-                    val repos: List<Repo>? = response.body()
-                    _repo.postValue(repos)
-                    _owner.postValue(repos?.get(0)?.owner)
+    fun setName(username: String) {
+        _name.postValue(username)
+    }
+
+    fun start() {
+        //　今回はここで決め打ち
+        val usernames = listOf("ho2ri2s", "googlesamples", "kotlin", "android", "jetbrains")
+        viewModelScope.launch {
+            val ownerList = ArrayList<Owner>()
+            usernames.forEach { username ->
+                try {
+                    val response = api.getOwner(username)
+                    if (response.isSuccessful && response.body() != null) {
+                        ownerList.add(response.body()!!)
+                    }
+                } catch (t: Throwable) {
+                    t.printStackTrace()
                 }
-            } catch (t: Throwable) {
-                t.printStackTrace()
             }
+            _owner.postValue(ownerList)
         }
+    }
+
+    companion object {
+        private const val PAGE_SIZE = 30
     }
 }
