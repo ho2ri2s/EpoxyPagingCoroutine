@@ -8,9 +8,10 @@ import retrofit2.http.Query
 
 interface GithubApi {
 
-    @GET("/users/{user}/repos")
+    @GET("/users/{username}/repos")
     suspend fun getGithubRepos(
-        @Path("user") username: String,
+        @Path("username") username: String,
         @Query("page") page: String,
-        @Query("per_page") perPage: String): Response<List<Repo>>
+        @Query("per_page") perPage: String
+    ): Response<List<Repo>>
 }

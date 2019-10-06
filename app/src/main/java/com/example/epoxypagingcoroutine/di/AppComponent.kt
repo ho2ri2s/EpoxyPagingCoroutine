@@ -1,6 +1,5 @@
 package com.example.epoxypagingcoroutine.di
 
-import com.example.epoxypagingcoroutine.ui.GithubViewModel
 import com.example.epoxypagingcoroutine.ui.GithubViewModelModule
 import com.example.epoxypagingcoroutine.ui.MainActivity
 import dagger.Component
