@@ -2,10 +2,12 @@ package com.example.epoxypagingcoroutine.ui
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
 import com.example.epoxypagingcoroutine.App
 import com.example.epoxypagingcoroutine.R
+import kotlinx.android.synthetic.main.activity_main.*
 import javax.inject.Inject
 
 class MainActivity : AppCompatActivity() {
@@ -21,5 +23,11 @@ class MainActivity : AppCompatActivity() {
 
         (application as App).appComponent.inject(this)
         viewModel = ViewModelProviders.of(this, viewModelFactory).get(GithubViewModel::class.java)
+
+        viewModel.getGithubRepos()
+
+        viewModel.owner.observe(this, Observer {
+            textView.text = it.name
+        })
     }
 }
