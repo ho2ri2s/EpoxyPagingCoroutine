@@ -6,6 +6,7 @@
         <option value="activate" />
         <option value="activateOnShortcut" />
         <option value="activateOnBatch" />
+        <option value="compile" />
       </set>
     </option>
     <option name="configurationPath" value="" />

@@ -32,9 +32,10 @@ class GithubViewModel @Inject constructor(
     val owner: LiveData<List<Owner>>
         get() = _owner
 
-    fun setName(username: String) {
+    fun setName(username: String) = viewModelScope.launch {
         _name.postValue(username)
     }
+
 
     fun start() {
         //　今回はここで決め打ち
