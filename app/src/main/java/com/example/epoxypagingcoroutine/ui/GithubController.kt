@@ -8,7 +8,13 @@ import com.example.epoxypagingcoroutine.data.model.Repo
 import com.example.epoxypagingcoroutine.ui.epoxy_model.OwnerModel_
 import com.example.epoxypagingcoroutine.ui.epoxy_model.RepositoryModel_
 
-class GithubController: PagedListEpoxyController<Repo>() {
+class GithubController(
+   private val listener: CardClickListener
+): PagedListEpoxyController<Repo>() {
+
+    interface CardClickListener {
+        fun onClickCard(userName: String)
+    }
 
     var owners: List<Owner> = emptyList()
 
@@ -28,9 +34,11 @@ class GithubController: PagedListEpoxyController<Repo>() {
             .numViewsToShowOnScreen(2f)
             .models(
                 owners.map {
-                    OwnerModel_()
-                        .id(it.id)
-                        .owner(it)
+                    OwnerModel_().apply {
+                        id(it.id)
+                        owner = it
+                        cardClickListener = listener::onClickCard
+                    }
                 }
             ).addTo(this)
 

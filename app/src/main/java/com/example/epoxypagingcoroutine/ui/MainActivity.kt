@@ -7,14 +7,12 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.example.epoxypagingcoroutine.App
 import com.example.epoxypagingcoroutine.R
 import com.example.epoxypagingcoroutine.databinding.ActivityMainBinding
-import kotlinx.android.synthetic.main.activity_main.*
 import javax.inject.Inject
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity(), GithubController.CardClickListener {
 
     @Inject
     lateinit var viewModelFactory: ViewModelProvider.Factory
@@ -26,9 +24,10 @@ class MainActivity : AppCompatActivity() {
 
         (application as App).appComponent.inject(this)
         viewModel = ViewModelProvider(this, viewModelFactory).get(GithubViewModel::class.java)
-        val binding = DataBindingUtil.setContentView<ActivityMainBinding>(this, R.layout.activity_main)
+        val binding =
+            DataBindingUtil.setContentView<ActivityMainBinding>(this, R.layout.activity_main)
 
-        val controller = GithubController()
+        val controller = GithubController(this)
 
         viewModel.apply {
             owner.observe(this@MainActivity, Observer {
@@ -43,11 +42,19 @@ class MainActivity : AppCompatActivity() {
         binding.recyclerView.apply {
             adapter = controller.adapter
             layoutManager = linearLayoutManager
-            addItemDecoration(DividerItemDecoration(this@MainActivity, linearLayoutManager.orientation))
+            addItemDecoration(
+                DividerItemDecoration(
+                    this@MainActivity,
+                    linearLayoutManager.orientation
+                )
+            )
         }
         viewModel.start()
-        viewModel.setName("ho2ri2s")
 
         controller.requestModelBuild()
+    }
+
+    override fun onClickCard(userName: String) {
+        viewModel.setUsername(userName)
     }
 }

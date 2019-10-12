@@ -6,7 +6,7 @@ import androidx.paging.PagedList
 import com.example.epoxypagingcoroutine.data.GithubApi
 import com.example.epoxypagingcoroutine.data.model.Owner
 import com.example.epoxypagingcoroutine.data.model.Repo
-import com.example.epoxypagingcoroutine.ui.paging.DatasourceFactory
+import com.example.epoxypagingcoroutine.ui.paging.DataSourceFactory
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -18,7 +18,7 @@ class GithubViewModel @Inject constructor(
 
     val repos: LiveData<PagedList<Repo>> =
         Transformations.switchMap(_name) { username ->
-            val dataSourceFactory = DatasourceFactory(username, api, viewModelScope)
+            val dataSourceFactory = DataSourceFactory(username, api, viewModelScope)
 
             val config = PagedList.Config.Builder()
                 .setPageSize(PAGE_SIZE)
@@ -32,10 +32,9 @@ class GithubViewModel @Inject constructor(
     val owner: LiveData<List<Owner>>
         get() = _owner
 
-    fun setName(username: String) = viewModelScope.launch {
+    fun setUsername(username: String) = viewModelScope.launch {
         _name.postValue(username)
     }
-
 
     fun start() {
         //　今回はここで決め打ち

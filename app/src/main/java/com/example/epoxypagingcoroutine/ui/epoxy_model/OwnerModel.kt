@@ -16,9 +16,15 @@ abstract class OwnerModel : EpoxyModelWithHolder<OwnerModel.OwnerViewHolder>() {
     @EpoxyAttribute
     lateinit var owner: com.example.epoxypagingcoroutine.data.model.Owner
 
+    @EpoxyAttribute
+    lateinit var cardClickListener: (String) -> Unit
+
     override fun bind(holder: OwnerViewHolder) {
         super.bind(holder)
         holder.binding.owner = owner
+        holder.binding.containerCard.setOnClickListener{
+            cardClickListener(owner.name)
+        }
     }
 
     inner class OwnerViewHolder : EpoxyHolder() {

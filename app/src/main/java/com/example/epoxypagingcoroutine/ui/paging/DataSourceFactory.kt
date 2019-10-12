@@ -5,12 +5,11 @@ import com.example.epoxypagingcoroutine.data.GithubApi
 import com.example.epoxypagingcoroutine.data.model.Repo
 import kotlinx.coroutines.CoroutineScope
 
-class DatasourceFactory(
-    username: String,
-    api: GithubApi,
-    scope: CoroutineScope
+class DataSourceFactory(
+    private val username: String,
+    private val api: GithubApi,
+    private val scope: CoroutineScope
 ) : DataSource.Factory<String, Repo>() {
 
-    val source = GithubPagingDataSource(username, api, scope)
-    override fun create(): DataSource<String, Repo> = source
+    override fun create(): DataSource<String, Repo> = GithubPagingDataSource(username, api, scope)
 }
