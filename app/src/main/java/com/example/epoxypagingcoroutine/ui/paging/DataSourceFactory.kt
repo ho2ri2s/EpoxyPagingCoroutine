@@ -9,7 +9,7 @@ class DataSourceFactory(
     private val username: String,
     private val api: GithubApi,
     private val scope: CoroutineScope
-) : DataSource.Factory<String, Repo>() {
+) : DataSource.Factory<Int, Repo>() {
 
-    override fun create(): DataSource<String, Repo> = GithubPagingDataSource(username, api, scope)
+    override fun create(): DataSource<Int, Repo> = GithubPagingDataSource(username, api, scope)
 }
