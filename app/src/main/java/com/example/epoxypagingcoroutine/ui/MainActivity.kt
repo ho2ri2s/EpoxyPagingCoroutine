@@ -28,6 +28,13 @@ class MainActivity : AppCompatActivity(), GithubController.CardClickListener {
             DataBindingUtil.setContentView<ActivityMainBinding>(this, R.layout.activity_main)
 
         val controller = GithubController(this)
+        val linearLayoutManager = LinearLayoutManager(this)
+        binding.recyclerView.apply {
+            adapter = controller.adapter
+            layoutManager = linearLayoutManager
+            addItemDecoration(DividerItemDecoration(this@MainActivity, linearLayoutManager.orientation))
+        }
+        controller.requestModelBuild()
 
         viewModel.apply {
             owner.observe(this@MainActivity, Observer {
@@ -38,20 +45,8 @@ class MainActivity : AppCompatActivity(), GithubController.CardClickListener {
                 controller.submitList(it)
             })
         }
-        val linearLayoutManager = LinearLayoutManager(this)
-        binding.recyclerView.apply {
-            adapter = controller.adapter
-            layoutManager = linearLayoutManager
-            addItemDecoration(
-                DividerItemDecoration(
-                    this@MainActivity,
-                    linearLayoutManager.orientation
-                )
-            )
-        }
-        viewModel.start()
 
-        controller.requestModelBuild()
+        viewModel.getOwner()
     }
 
     override fun onClickCard(userName: String) {

@@ -1,7 +1,7 @@
 package com.example.epoxypagingcoroutine.ui
 
-import com.airbnb.epoxy.CarouselModel_
 import com.airbnb.epoxy.EpoxyModel
+import com.airbnb.epoxy.carousel
 import com.airbnb.epoxy.paging.PagedListEpoxyController
 import com.example.epoxypagingcoroutine.data.model.Owner
 import com.example.epoxypagingcoroutine.data.model.Repo
@@ -27,12 +27,12 @@ class GithubController(
     }
 
     override fun addModels(models: List<EpoxyModel<*>>) {
-        CarouselModel_()
-            .id("carousel")
-            .spanSizeOverride { _, _, _ -> 2 }
-            .paddingDp(8)
-            .numViewsToShowOnScreen(2f)
-            .models(
+        carousel {
+            id("carousel")
+            spanSizeOverride { _, _, _ -> 2 }
+            paddingDp(8)
+            numViewsToShowOnScreen(2f)
+            models(
                 owners.map {
                     OwnerModel_().apply {
                         id(it.id)
@@ -40,8 +40,8 @@ class GithubController(
                         cardClickListener = listener::onClickCard
                     }
                 }
-            ).addTo(this)
-
+            )
+        }
         super.addModels(models)
     }
 }

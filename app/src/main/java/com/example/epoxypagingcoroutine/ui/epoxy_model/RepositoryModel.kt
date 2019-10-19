@@ -22,7 +22,7 @@ abstract class RepositoryModel : EpoxyModelWithHolder<RepositoryModel.Repository
         holder.binding.repo = repo
     }
 
-    inner class RepositoryViewHolder() : EpoxyHolder() {
+    inner class RepositoryViewHolder : EpoxyHolder() {
         override fun bindView(itemView: View) {
             binding = DataBindingUtil.bind(itemView) ?: kotlin.run {
                 throw IllegalStateException("Cannot create binding.")

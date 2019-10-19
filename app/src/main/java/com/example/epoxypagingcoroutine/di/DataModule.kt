@@ -17,7 +17,7 @@ import javax.inject.Singleton
 class DataModule {
 
     @Singleton
-    val okHttpClient = OkHttpClient.Builder()
+    private val okHttpClient = OkHttpClient.Builder()
         .connectTimeout(120, TimeUnit.SECONDS)
         .readTimeout(120, TimeUnit.SECONDS)
         .addInterceptor(HttpLoggingInterceptor().apply {
@@ -26,7 +26,7 @@ class DataModule {
         .build()
 
     @Singleton
-    val moshi = Moshi.Builder()
+    private val moshi = Moshi.Builder()
         .add(KotlinJsonAdapterFactory())
         .build()
 
@@ -41,7 +41,7 @@ class DataModule {
 
     @Singleton
     @Provides
-    fun provideApi(retrofit: Retrofit): GithubApi =
+    fun provideGithubApi(retrofit: Retrofit): GithubApi =
         retrofit.create(GithubApi::class.java)
 
     companion object {

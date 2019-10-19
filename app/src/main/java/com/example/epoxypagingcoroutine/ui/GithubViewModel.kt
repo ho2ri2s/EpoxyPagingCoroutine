@@ -1,6 +1,7 @@
 package com.example.epoxypagingcoroutine.ui
 
 import androidx.lifecycle.*
+import androidx.lifecycle.Transformations.switchMap
 import androidx.paging.LivePagedListBuilder
 import androidx.paging.PagedList
 import com.example.epoxypagingcoroutine.data.GithubApi
@@ -17,7 +18,7 @@ class GithubViewModel @Inject constructor(
     private val _name = MutableLiveData<String>()
 
     val repos: LiveData<PagedList<Repo>> =
-        Transformations.switchMap(_name) { username ->
+        switchMap(_name) { username ->
             val dataSourceFactory = DataSourceFactory(username, api, viewModelScope)
 
             val config = PagedList.Config.Builder()
@@ -36,7 +37,7 @@ class GithubViewModel @Inject constructor(
         _name.postValue(username)
     }
 
-    fun start() {
+    fun getOwner() {
         //　今回はここで決め打ち
         val usernames = listOf("ho2ri2s", "googlesamples", "kotlin", "android", "jetbrains")
         viewModelScope.launch {
@@ -52,10 +53,11 @@ class GithubViewModel @Inject constructor(
                 }
             }
             _owner.postValue(ownerList)
+            setUsername(usernames[0])
         }
     }
 
     companion object {
-        private const val PAGE_SIZE = 30
+        private const val PAGE_SIZE = 20
     }
 }

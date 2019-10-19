@@ -9,12 +9,13 @@ import com.airbnb.epoxy.EpoxyModelWithHolder
 import com.example.epoxypagingcoroutine.R
 import com.example.epoxypagingcoroutine.databinding.ItemOwnerBinding
 import java.lang.IllegalStateException
+import com.example.epoxypagingcoroutine.data.model.Owner
 
 @EpoxyModelClass(layout = R.layout.item_owner)
 abstract class OwnerModel : EpoxyModelWithHolder<OwnerModel.OwnerViewHolder>() {
 
     @EpoxyAttribute
-    lateinit var owner: com.example.epoxypagingcoroutine.data.model.Owner
+    lateinit var owner: Owner
 
     @EpoxyAttribute
     lateinit var cardClickListener: (String) -> Unit
